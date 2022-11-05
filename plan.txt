@@ -1,0 +1,57 @@
+#TODO:1, calculating the score for the word:
+#each word is assigned sertian points
+#1	E, A, I, O, N, R, T, L, S, U
+#2	D, G
+#3	B, C, M, P
+#4	F, H, V, W, Y
+#5	K
+#8	J, X
+#10	Q, Z
+
+#function for calculating points:
+    #put in a word(input) and return the number of points(output)
+    #create 10 seperate string inside of a points dictionary with the key representing the points and the values representing the characters.
+    #create a variable to count the points starting at 0
+    #the key will be the number of points and the value will be the letters
+    #loop through the characters given and check if the value of each key contains the characters
+    #if it does, the key will be parsed as an integer and added to the count
+    #at the end return the number of points
+    
+#Func for giving seven tiles chosen randomly from the english alphabet to the players rack
+    takes in no input and should give 7 times from random to the player
+    make a variable which is a string to represent the players rack
+    need to import choice from random and have a variable set to all the letters from the alphabet (ascii_uppercase)
+    need to loop through 7 times and add to the variable.  
+    tiles are represented as a character in a string and the rack is a string
+
+creating bag: 
+build set function 
+    takes in a number and a tile parameter
+    create a string for the tiles 
+    loop through the number and add whatever is in the tile to the string
+    return the string 
+build_bag:
+    run build set as many times as needed with the parameters to create the bag.
+build rack:
+    take a bag as a parameter and return a string for a rack. 
+    loop through 7 times and use choice to select a random character from the bag
+
+
+#getWords:
+    need to open the file 'dictionary.txt' as a variable
+    each new line needs to be a new string or list to be able to search through it
+find valid words:
+    *there are a lot of words so it will be slow to loop through the words one by one*
+    takes in a rack and the dictionary as a parameter and returns all the words which are valid
+    need to make a for loop which takes the first letter of the rack
+        will loop through the dictionary and returns all words with that letter
+    
+    after you have the words with the first letter:
+
+    you need to make a loop which takes in the 2nd letter
+    loop through the words with the first letter and checks if they have the 2nd letter Too
+    carry this on until you have narrowed down the possible words.
+
+        
+
+
