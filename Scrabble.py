@@ -51,7 +51,7 @@ Bag = build_Bag()
 playerRack = build_Rack()
 
 #task 4
-def getWords():
+def get_Words():
     with open("dictionary.txt", "r") as f:
         words = f
     return words
@@ -59,3 +59,5 @@ def find_valid_words(rack, words):
     
     return ""
 possible_words = find_valid_words(playerRack, getWords())
+
+
