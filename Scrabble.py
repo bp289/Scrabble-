@@ -2,7 +2,9 @@ from random import choice
 from string import ascii_uppercase
 
 #task 1
-def calculate_Score(word):
+def calculate_score(word):
+    if not word:
+        return 0
     points_For_Letter = {
         1: "EAIONRTLSU",
         2: "DG",
@@ -12,52 +14,144 @@ def calculate_Score(word):
         8: "JX",
         10: "QZ" 
     }
-    if not word:
-        return 0
     
     result = 0
     for letter in word:
         for x in points_For_Letter:
             if points_For_Letter[x].__contains__(letter):
-                result += int(x)
-        
+                result += int(x) 
     
     return result
-print(calculate_Score("GUARDIAN"))
 
-#task 2
-Rack = ""
-def assign_tiles(): 
-    letters = ascii_uppercase
+def build_rack_from_alphabet():
+    tiles = []
     for i in range(7):
-        Rack += choice(letters)
-print(Rack)      
+        letter = choice(ascii_uppercase)
+        tiles.append(build_tile(letter))
+    return tiles
+     
+def build_tile(letter):
+    if not letter:
+        return None
+    else:
+        return { 
+        'letter': letter,
+        "points": calculate_score(letter)  
+        }
 
-#task 3
-def build_Set(number, tiles):
-    bag = ""
-    for i in range(number):
-        times+= bag
-    return bag  
-def build_Bag():
-    bag = f"{build_Set(12, 'E')}{build_Set(9, 'AI')}{build_Set(8, 'O')}{build_Set(6, 'NRT')}{build_Set(4, 'LSUD')}{build_Set(3, 'G')}{build_Set(2, 'BCMPFHVWY')}{build_Set(1, 'KJXQZ')}"
-    return bag    
-def build_Rack(bag):
-    rack = ""
+def build_tile_set(amount, letter):
+    if not amount or not letter:
+        return None
+    else:
+        tile_set = []
+        for i in range(amount):
+            tile_set.append(build_tile(letter))
+        return tile_set
+
+def build_bag(distribution):
+    bag = []
+    for item in distribution: 
+        amount = list(item.keys())[0] 
+        letters = item[amount]
+        if letters and amount:
+            for letter in letters:
+                bag += (build_tile_set(amount, letter))     
+
+    return bag
+
+def assign_tiles(bag):
+    player_rack = []
     for i in range(7):
-        rack += choice(bag)
-    return 
-Bag = build_Bag()
-playerRack = build_Rack()
-
-#task 4
-def get_Words():
-    with open("dictionary.txt", "r") as f:
-        words = f
-    return words
-def find_valid_words(rack, words):
+        player_rack.append(choice(bag))
     
-    return ""
-possible_words = find_valid_words(playerRack, getWords())
+    return player_rack
+      
+def load_valid_words():
+    with open("./dictionary.txt", "r") as f:
+        words = f.read().splitlines()
+    
+    return words 
+
+def valid_words_from_rack(rack, words):
+    valid_words = words
+    temp_words = []
+    letters = [tile["letter"].lower() for tile in rack]
+    
+    for letter in letters:
+        for word in valid_words:
+            if letter in word:
+                temp_words.append(word)
+        valid_words = temp_words
+        temp_words = []
+    
+
+    return valid_words
+            
+def longest_valid_word(words):
+    longest_word = ""
+    for word in words:
+        if len(word) > len(longest_word):
+            longest_word = word
+    
+    return longest_word
+            
+def highest_scoring_word(words):
+    highest_scoring_word = ""
+    
+    for word in words:
+     
+        if calculate_score(word.upper()) > calculate_score(highest_scoring_word.upper()):
+            highest_scoring_word = word
+    
+    return highest_scoring_word
 
 
+if __name__ == '__main__':
+    #calculating score
+    print(f'score for GUARDIAN: \n {calculate_score("GUARDIAN")}')
+    
+    #creating a rack from the alphabet
+    alphabet_rack = build_rack_from_alphabet()
+    print(f"alphabet_rack : \n {alphabet_rack}")
+    
+    #creating a a bag from the distribution and a rack from the bag 
+    distribution = [
+        {12:"E"},
+        {9:"AI"},
+        {8:"O"},
+        {6:"NRT"},
+        {4:"LSUD"},
+        {3:"G"},
+        {2:"BCMPFHVWY"},
+        {1:"KJXQZ"},
+    ]
+    bag = build_bag(distribution)
+    player_rack = assign_tiles(bag)
+    print(f"player rack: \n {player_rack}")
+    
+    #looking for a valid words
+    valid_words = load_valid_words()
+    test_rack =  [
+    {'letter': 'R', 'points': 1}, 
+    {'letter': 'O', 'points': 1},
+    {'letter': 'L', 'points': 1}, 
+    {'letter': 'S', 'points': 1},
+    {'letter': 'A', 'points': 1}, 
+    {'letter': 'S', 'points': 1}, 
+    {'letter': 'J', 'points': 8}
+    ]
+    player_valid_words = valid_words_from_rack(test_rack, valid_words)
+    print(f"all valid words: \n {player_valid_words}")
+    print(f" one word: \n {choice(player_valid_words)}")
+    
+    #finding the longest valid word
+    print(f"longest_word: {longest_valid_word(player_valid_words)}")
+    
+    #finding the highest scoring word that can be formed:
+    print(f" highest scoring word: {highest_scoring_word(player_valid_words)}")
+    
+    
+    
+    
+    
+    
